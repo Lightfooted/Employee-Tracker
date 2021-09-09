@@ -26,6 +26,7 @@ const userSelections = () => {
             'view all departments',
             'view all roles',
             'view all employees',
+            'view all information',
             'add a department',
             'add a role',
             'add an employee',
@@ -48,6 +49,10 @@ const userSelections = () => {
       viewEmployees();
     }
 
+    if (options === 'view all information') {
+      viewFullTables();
+    }
+
     if (options === 'add a department') {
       addDepartment();
     }
@@ -67,7 +72,7 @@ const userSelections = () => {
 };
 
 //Show all departments
-viewDepartments = () => {
+const viewDepartments = () => {
   const sql = `SELECT * FROM department`; 
 
   connection.query(sql, (err, res) => {
@@ -78,7 +83,7 @@ viewDepartments = () => {
 };
 
 //Show all roles
-viewRoles = () => {
+const viewRoles = () => {
   const sql = `SELECT * FROM role`;
   
   connection.query(sql, (err, res) => {
@@ -89,8 +94,30 @@ viewRoles = () => {
 };
 
 //Show all employees
-viewEmployees = () => {
+const viewEmployees = () => {
   const sql = `SELECT * FROM employee`;
+  
+  connection.query(sql, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    userSelections();
+  });
+};
+
+//Show all information
+const viewFullTables = () => {
+  const sql = `SELECT employee.id, 
+                      employee.first_name, 
+                      employee.last_name, 
+                      role.title, 
+                      department.name AS department,
+                      role.salary, 
+                      CONCAT (manager.first_name, ' ', manager.last_name) AS manager
+                      FROM employee
+                      LEFT JOIN role ON employee.role_id = role.id
+                      LEFT JOIN department ON role.department_id = department.id
+                      LEFT JOIN employee manager ON employee.manager_id = manager.id
+                      GROUP BY employee.id`;
   
   connection.query(sql, (err, res) => {
     if (err) throw err;
