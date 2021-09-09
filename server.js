@@ -33,4 +33,68 @@ const userSelections = () => {
         ]
     }
  ])
+ .then((userInput) => {
+    const { options } = userInput; 
+
+    if (options === 'view all departments') {
+      viewDepartments();
+    }
+
+    if (options === 'view all roles') {
+      viewRoles();
+    }
+
+    if (options === 'view all employees') {
+      viewEmployees();
+    }
+
+    if (options === 'add a department') {
+      addDepartment();
+    }
+
+    if (options === 'add a role') {
+      addRole();
+    }
+
+    if (options === 'add an employee') {
+      addEmployee();
+    }
+
+    if (options === 'update employee role') {
+      updateRole();
+    }
+  });
+};
+
+//Show all departments
+viewDepartments = () => {
+  const sql = `SELECT * FROM department`; 
+
+  connection.query(sql, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    userSelections();
+  });
+};
+
+//Show all roles
+viewRoles = () => {
+  const sql = `SELECT * FROM role`;
+  
+  connection.query(sql, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    userSelections();
+  });
+};
+
+//Show all employees
+viewEmployees = () => {
+  const sql = `SELECT * FROM employee`;
+  
+  connection.query(sql, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    userSelections();
+  });
 };
