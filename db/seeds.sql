@@ -18,11 +18,11 @@ VALUES
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES 
-('John', 'Doe', 1),
-('Mike', 'Chan', 1),
+('John', 'Doe', 1, 3),
+('Mike', 'Chan', 1, 1),
 ('Ashley', 'Rodriquez', 2, NULL),
-('Kevin', 'Tupik', 2),
+('Kevin', 'Tupik', 2, 3),
 ('Malia', 'Brown', 3, NULL),
 ('Sarah', 'Lourd', 3, NULL),
-('Tom', 'Allen', 4),
-('Tammer', 'Galal', 2);
+('Tom', 'Allen', 4, 6),
+('Tammer', 'Galal', 2, 4);
