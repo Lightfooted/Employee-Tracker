@@ -152,3 +152,45 @@ const addDepartment = () => {
 			});
 		});
 };
+
+//Create role with salary
+const addRole = () => {
+	return inquirer.prompt([
+		{
+			type: 'input',
+			name: 'assignedRole',
+			message: 'What is the name of the new role? (Required!)',
+			validate: nameInput => {
+				if (nameInput) {
+					return true;
+				} else {
+					console.log('You must provide the role title!');
+					return false;
+				}
+			}
+    },
+      {
+        type: 'input',
+        name: 'salary',
+        message: 'What is the salary of the new role? (Required!)',
+        validate: salaryInput => {
+          if (salaryInput) {
+            return true;
+          } else {
+            console.log('You must provide the roles salary!');
+            return false;
+          }
+        }
+      }
+    ])
+		.then((newRole) => {
+      console.log('insertnewrole');
+			const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
+			connection.query(sql, [newRole.assignedRole, newRole.salary, 5], (err, res) => {
+				if (err) throw err;
+				console.table(res);
+				viewRoles();
+			});
+		});
+};
+
