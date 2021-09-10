@@ -181,12 +181,25 @@ const addRole = () => {
             return false;
           }
         }
+      },
+	  {
+        type: 'number',
+        name: 'departmentID',
+        message: 'What is the the departments ID? (Required!)',
+        validate: salaryInput => {
+          if (salaryInput) {
+            return true;
+          } else {
+            console.log('This department must have an ID!');
+            return false;
+          }
+        }
       }
     ])
 		.then((newRole) => {
       console.log('insertnewrole');
 			const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
-			connection.query(sql, [newRole.assignedRole, newRole.salary, 5], (err, res) => {
+			connection.query(sql, [newRole.assignedRole, newRole.salary, newRole.departmentID], (err, res) => {
 				if (err) throw err;
 				console.table(res);
 				viewRoles();
