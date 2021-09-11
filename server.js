@@ -78,7 +78,11 @@ const viewDepartments = () => {
 
 //Show all roles
 const viewRoles = () => {
-	const sql = `SELECT * FROM role`;
+	const sql = `SELECT role.id, 
+                      role.title, 
+                      department.name AS department
+                      FROM role
+                      INNER JOIN department ON role.department_id = department.id`;
 
 	connection.query(sql, (err, res) => {
 		if (err) throw err;
@@ -128,7 +132,7 @@ const addDepartment = () => {
 		.then((addedDepartment) => {
 			const sql = `INSERT INTO department (name) VALUES (?)`;
 
-			connection.query(sql, addedDepartment.addNewDepartment, (err, res) => {
+			connection.query(sql, [addedDepartment.addNewDepartment], (err, res) => {
 				if (err) throw err;
 				console.table(res);
 				viewDepartments();
@@ -180,7 +184,6 @@ const addRole = () => {
       }
     ])
 		.then((newRole) => {
-      console.log('insertnewrole');
 			const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
 
 			connection.query(sql, [newRole.assignedRole, newRole.salary, newRole.departmentID], (err, res) => {
@@ -258,3 +261,56 @@ const addEmployee = () => {
 		});
 };
 
+//Updating employee role (Need an easier way to do this one. Too many steps for the user and can cause unwanted data. May use a list type in the future if I ever go back.)
+const updateRole = () => {
+	return inquirer.prompt([
+		{
+			type: 'input',
+			name: 'firstName',
+			message: 'What is the first name of the employee? (Required!)',
+			validate: nameInput => {
+				if (nameInput) {
+					return true;
+				} else {
+					console.log('The employee must have a first name!');
+					return false;
+        }
+      }
+    },
+    {
+			type: 'input',
+			name: 'lastName',
+			message: 'What is the last name of the employee? (Required!)',
+			validate: nameInput => {
+				if (nameInput) {
+					return true;
+				} else {
+					console.log('The employee must have a last name!');
+					return false;
+        }
+      }
+    },
+    {
+			type: 'number',
+			name: 'roleID',
+			message: 'What is the NEW role ID of the employee? (Required!)',
+			validate: idRoleInput => {
+				if (idRoleInput) {
+					return true;
+				} else {
+					console.log('You must provide an ID for the NEW role of the employee!');
+					return false;
+        }
+      }
+    }
+  ])
+  .then((updateEmpRole) => {
+    const sql = `UPDATE employee SET role_id = ? WHERE first_name = ? AND last_name = ?`;
+
+    connection.query(sql, [updateEmpRole.firstName, updateEmpRole.lastName, updateEmpRole.roleID], (err, res) => {
+      if (err) throw err;
+      console.table(res);
+      viewEmployees();
+    });
+  });
+};
