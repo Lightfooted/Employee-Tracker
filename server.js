@@ -261,7 +261,7 @@ const addEmployee = () => {
 		});
 };
 
-//Updating employee role (Need an easier way to do this one. Too many steps for the user and can cause unwanted data. May use a list type in the future if I ever go back.)
+//Updating employee role (Need an easier way to do this one. Too many steps for the user. May use a list type in the future if I ever go back.)
 const updateRole = () => {
 	return inquirer.prompt([
 		{
@@ -307,7 +307,7 @@ const updateRole = () => {
   .then((updateEmpRole) => {
     const sql = `UPDATE employee SET role_id = ? WHERE first_name = ? AND last_name = ?`;
 
-    connection.query(sql, [updateEmpRole.firstName, updateEmpRole.lastName, updateEmpRole.roleID], (err, res) => {
+    connection.query(sql, [updateEmpRole.roleID, updateEmpRole.firstName, updateEmpRole.lastName], (err, res) => {
       if (err) throw err;
       console.table(res);
       viewEmployees();
