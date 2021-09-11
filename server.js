@@ -26,7 +26,6 @@ const userSelections = () => {
 				'view all departments',
 				'view all roles',
 				'view all employees',
-				'view all information',
 				'add a department',
 				'add a role',
 				'add an employee',
@@ -46,10 +45,6 @@ const userSelections = () => {
 
 			if (options === 'view all employees') {
 				viewEmployees();
-			}
-
-			if (options === 'view all information') {
-				viewFullTables();
 			}
 
 			if (options === 'add a department') {
@@ -94,18 +89,7 @@ const viewRoles = () => {
 
 //Show all employees
 const viewEmployees = () => {
-	const sql = `SELECT * FROM employee`;
-
-	connection.query(sql, (err, res) => {
-		if (err) throw err;
-		console.table(res);
-		userSelections();
-	});
-};
-
-//Show all information
-const viewFullTables = () => {
-	const sql = `SELECT employee.id, 
+  const sql = `SELECT employee.id, 
                       employee.first_name, 
                       employee.last_name, 
                       role.title, 
