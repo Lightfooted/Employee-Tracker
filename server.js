@@ -34,9 +34,7 @@ const userSelections = () => {
 			]
 		}])
 		.then((userInput) => {
-			const {
-				options
-			} = userInput;
+			const { options } = userInput;
 
 			if (options === 'view all departments') {
 				viewDepartments();
@@ -145,6 +143,7 @@ const addDepartment = () => {
 		}])
 		.then((addedDepartment) => {
 			const sql = `INSERT INTO department (name) VALUES (?)`;
+
 			connection.query(sql, addedDepartment.addNewDepartment, (err, res) => {
 				if (err) throw err;
 				console.table(res);
@@ -160,8 +159,8 @@ const addRole = () => {
 			type: 'input',
 			name: 'assignedRole',
 			message: 'What is the name of the new role? (Required!)',
-			validate: nameInput => {
-				if (nameInput) {
+			validate: roleInput => {
+				if (roleInput) {
 					return true;
 				} else {
 					console.log('You must provide the role title!');
@@ -185,9 +184,9 @@ const addRole = () => {
 	  {
         type: 'number',
         name: 'departmentID',
-        message: 'What is the the departments ID? (Required!)',
-        validate: salaryInput => {
-          if (salaryInput) {
+        message: 'What is the department ID? (Required!)',
+        validate: departInput => {
+          if (departInput) {
             return true;
           } else {
             console.log('This department must have an ID!');
@@ -199,10 +198,78 @@ const addRole = () => {
 		.then((newRole) => {
       console.log('insertnewrole');
 			const sql = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
+
 			connection.query(sql, [newRole.assignedRole, newRole.salary, newRole.departmentID], (err, res) => {
 				if (err) throw err;
 				console.table(res);
 				viewRoles();
+			});
+		});
+};
+
+//Create employee
+const addEmployee = () => {
+	return inquirer.prompt([
+		{
+			type: 'input',
+			name: 'firstName',
+			message: 'What is the employees first name? (Required!)',
+			validate: nameInput => {
+				if (nameInput) {
+					return true;
+				} else {
+					console.log('The employee needs a first name!');
+					return false;
+				}
+			}
+    },
+      {
+        type: 'input',
+        name: 'lastName',
+        message: 'What is the employees last name? (Required!)',
+        validate: nameInput => {
+          if (nameInput) {
+            return true;
+          } else {
+            console.log('The employee needs a last name!');
+            return false;
+          }
+        }
+      },
+	  {
+        type: 'number',
+        name: 'roleID',
+        message: 'What is the role ID for this employee? (Required!)',
+        validate: idRoleInput => {
+          if (idRoleInput) {
+            return true;
+          } else {
+            console.log('You must provide the employees role ID!');
+            return false;
+          }
+        }
+      },
+      {
+        type: 'number',
+        name: 'managerID',
+        message: 'What is the managers ID for this employee? (Required!)',
+        validate: managerInput => {
+          if (managerInput) {
+            return true;
+          } else {
+            console.log('You must provide the managers ID for this employee!');
+            return false;
+          }
+        }
+      }
+    ])
+		.then((newEmployee) => {
+			const sql = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
+
+			connection.query(sql, [newEmployee.firstName, newEmployee.lastName, newEmployee.roleID, newEmployee.managerID], (err, res) => {
+				if (err) throw err;
+				console.table(res);
+				viewEmployees();
 			});
 		});
 };
