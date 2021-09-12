@@ -96,7 +96,7 @@ const viewRoles = () => {
 	});
 };
 
-//Show all employees
+//Show all employees with role title, deparment name, salary and their managers
 const viewEmployees = () => {
   const sql = `SELECT employee.id, 
                       employee.first_name, 
@@ -145,7 +145,7 @@ const addDepartment = () => {
 		});
 };
 
-//Create role with salary
+//Create role with their department and salary of the role
 const addRole = () => {
 	return inquirer.prompt([
 		{
@@ -199,7 +199,7 @@ const addRole = () => {
 		});
 };
 
-//Create employee
+//Create employee with their roles and assigned manager
 const addEmployee = () => {
 	return inquirer.prompt([
 		{
