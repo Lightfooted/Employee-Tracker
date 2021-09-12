@@ -29,7 +29,8 @@ const userSelections = () => {
 				'add a department',
 				'add a role',
 				'add an employee',
-				'update employee role'
+				'update employee role',
+				'goodbye!'
 			]
 		}])
 		.then((userInput) => {
@@ -61,6 +62,10 @@ const userSelections = () => {
 
 			if (options === 'update employee role') {
 				updateRole();
+			}
+
+			if (options === 'goodbye!') {
+				connection.end();
 			}
 		});
 };
